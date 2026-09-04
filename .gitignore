@@ -1,0 +1,16 @@
+.DS_Store
+.idea/
+.vscode/
+.cursor/
+.agents/
+.specs/
+.claude/settings.local.json
+*.log
+*.tmp
+*.swp
+*~
+.env
+.env.*
+node_modules/
+dist/
+coverage/

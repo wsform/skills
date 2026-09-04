@@ -1,0 +1,4 @@
+== Changelog ==
+
+= 1.0.0 - 09/03/2026 =
+* Added: Official agent skill for building, managing, and integrating forms with WS Form
