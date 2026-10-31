@@ -36,18 +36,26 @@ Related form settings (inspect JSON; do not reinvent):
 
 - List: `ws-form/sections` (includes parent `group_id`)
 - Add: `ws-form/section-add` (requires `group_id` from `tabs`)
-- Update: `ws-form/section-update` (label and `label_render`)
+- Update: `ws-form/section-update` (label, `label_render`, and `widths`)
 - Delete: `ws-form/section-delete` (cannot delete the last section on a tab; deletes the section's fields)
 
 Show the section heading with `label_render` `"on"`. Default is hidden.
 
 ## Grid and width
 
-The default WS Form framework uses a 12-column grid (`framework_column_count`, default 12). Breakpoints come from the active framework (extra-small through extra-large).
+The default WS Form framework uses a 12-column grid (`framework_column_count`, default 12). Breakpoints come from the active framework.
 
-For Ability-created fields, `width_factor` `0.5` is the supported way to place two fields side by side. Do not invent other width factors in create JSON.
+`width_factor` is create-only and may only be `0.5`. It sets the smallest breakpoint, so that half width applies at every screen size. Omit it for full width.
 
-Field layout can also use per-breakpoint sizes (`breakpoint_sizes`) in the full form model. Prefer native width/breakpoint settings over custom CSS grid.
+`widths` is the meta for any other width, including a different width per breakpoint. Each value is a fraction of the row, greater than 0 and at most 1. `1` is full width. Omit a breakpoint to inherit the previous one. On update, omit a breakpoint to leave it unchanged. Set a breakpoint to `null` or `""` to clear it so it inherits again.
+
+On the default `ws-form` framework the keys are `25` (extra small, default, up to 575px), `50` (small), `75` (medium), `100` (large, from 992px), and `150` (extra large, from 1200px). A later breakpoint that is omitted inherits the previous value. Example: `{"25":1,"100":0.5}` is full width below 992px and half width from 992px up. Other frameworks use their own keys. Follow the live tool description.
+
+Section `widths` can be set on create JSON or with `section-update`. Field `widths` can be set on create JSON, `field-add`, or `field-update`.
+
+Form meta `breakpoint_query` chooses whether those breakpoints follow browser width (`media`, the default) or form width (`container`). Form width suits sidebars and modals. Knowledge base: [Breakpoint queries](https://wsform.com/knowledgebase/breakpoint-queries/).
+
+Prefer native width settings over a custom CSS grid.
 
 ## Repeatable sections
 
@@ -67,7 +75,7 @@ Abilities cannot currently enable `section_repeatable` or add section-control fi
 
 Setting key: `framework`. Default: `ws-form`.
 
-Also supported: Bootstrap 3/4/4.1/5 and Foundation 5/6/6.4. WS Form outputs framework-native markup when those are selected.
+Also supported: Bootstrap 3.x, 4.0, 4.1-4.6, and 5+, and Foundation 5.x, 6.0-6.3.1, and 6.4+. WS Form outputs framework-native markup when those are selected.
 
 **Styler only works when `framework` is `ws-form`.** See [styling.md](styling.md).
 

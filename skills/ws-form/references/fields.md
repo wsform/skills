@@ -39,7 +39,7 @@ Available when using WS Form PRO. Not available when creating fields against WS 
 | Need | Type key | Notes |
 |---|---|---|
 | Date and/or time | `datetime` | |
-| File upload | `file` | |
+| File upload | `file` | When FileBird, HappyFiles, or Premio Folders is active, choose its folder in the layout editor |
 | Hidden value | `hidden` | Only `default_value` is meaningful for AI |
 | Color | `color` | |
 | Rating | `rating` | 0 to 5 |
@@ -58,13 +58,16 @@ WS Form has many other native field types. Abilities cannot create them. Do not 
 
 Examples of native types that current Abilities cannot create:
 
-- Signature, media capture, password, HTML, legal, range, progress, search, meter, SSN
+- Signature, media capture (`mediacapture`), password, HTML, divider, spacer, summary, legal, range, progress, search, meter, SSN
+- `message` field (on-form content). The Show Message confirmation is an action, not this field
 - Google Address, Google Map, Google Route
 - reCAPTCHA, hCaptcha, Turnstile, CaptchaFox, TrustedForm
 - Save & Continue (`save`), reset, clear, generic `button`
 - Repeatable section controls (`section_add`, `section_delete`, `section_up`, `section_down`, `section_icons`)
 - E-commerce beyond `price` (`quantity`, `price_select`, `price_checkbox`, `price_radio`, `price_range`, `price_subtotal`, `cart_price`, `cart_total`)
 - Submit (`submit`)
+
+Google Address and Google Route use WS Form → Settings → Advanced. For Google accounts registered after March 1, 2025, choose Places API (New) and Routes API (New).
 
 Full product index: [Field types](https://wsform.com/knowledgebase_category/field-types/).
 
@@ -86,14 +89,17 @@ Editable via create and `field-update`:
 | `step` | Number fields |
 | `invalid_feedback` | Validation message |
 | `options` | `select`, `checkbox`, `radio` only |
+| `widths` | Fraction of the row per breakpoint, greater than 0 and at most 1. See [sections-and-layout.md](sections-and-layout.md) |
 
 Create-only (not `field-update`):
 
 | Meta | Purpose |
 |---|---|
-| `width_factor` | `0.5` for half width; omit for full width |
+| `width_factor` | `0.5` only. Half width at every screen size. Omit for full width |
 
-`#calc(...)` in `default_value` is allowed on `price`, `number`, `text`, and `hidden` only. See [calculations.md](calculations.md).
+Use `widths` when the width should change by screen size. `#calc(...)` in `default_value` is allowed on `price`, `number`, `text`, and `hidden` only. See [calculations.md](calculations.md).
+
+If a variable in `default_value` contains double quotes, copy it exactly and escape the quotes inside the JSON string. Example: `#query_var(\"utm_source\")`.
 
 ## Options
 

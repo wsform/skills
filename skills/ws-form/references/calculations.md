@@ -22,6 +22,8 @@ Example:
 
 Field IDs must be real IDs from the form. Do not copy example IDs onto a live form.
 
+If a variable contains double quotes, copy it exactly into `default_value` and escape those quotes in JSON. Example: `#query_var(\"utm_source\")`.
+
 ## Variables
 
 Common variable families (client-side unless documented otherwise):

@@ -30,6 +30,10 @@ Status filter enum: `all` (excludes trash and spam), `publish` (submitted), `dra
 
 Storage is the **Save Submission** action (`database`). Save & Continue uses the `save` button field plus that action. See [Save](https://wsform.com/knowledgebase/save/).
 
+That action can auto-delete submissions after a number of days: move them to trash, or permanently delete them. Knowledge base: [Auto Delete Submissions](https://wsform.com/knowledgebase/auto-delete-submissions/).
+
+CSV export in WP admin supports column selection and ordering. There is no export Ability. Use Abilities for read access. Do not scrape the database.
+
 ## Notes
 
 Keep `content` as short note text. Put structured label/value rows in `meta.values` and action links in `meta.buttons`. For a system/third-party note, set `user_name` and optionally `locked` true.
@@ -49,10 +53,6 @@ Action results are stored on the submission (`actions` JSON, including per-actio
 3. Read action errors on that submission.
 4. Enable the debug console if appropriate ([troubleshooting.md](troubleshooting.md)).
 5. Do not replace the action with custom PHP until the failure is identified.
-
-## Export
-
-There is no export Ability. CSV export exists in WP admin. Use Abilities for read access; do not scrape the database.
 
 ## Permissions
 

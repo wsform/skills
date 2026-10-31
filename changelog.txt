@@ -1,4 +1,10 @@
 == Changelog ==
 
+= 1.1.0 - 10/30/2026 =
+* Added: Form folders, form locking, and style locking in the ability workflow
+* Added: Per-breakpoint field and section widths, Random Text Detection, Webhook Base64 file format, and breakpoint queries
+* Changed: Allow Updates covers structure edits and those deletes; Allow Deletes covers form and style deletion
+* Changed: Conditional Logic ability shape, debug console labels, and native field types Abilities cannot create
+
 = 1.0.0 - 09/03/2026 =
 * Added: Official agent skill for building, managing, and integrating forms with WS Form

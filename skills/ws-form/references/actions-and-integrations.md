@@ -35,13 +35,13 @@ These ship in the WS Form plugin (edition-dependent):
 
 Do not delete the last `email`, `message`, or `database` action.
 
-New forms should include at least one Send Email, one Show Message, and exactly one Save Submission action.
+New forms should include at least one Send Email, one Show Message, and exactly one Save Submission action. On create, WS Form stores actions in this order and assigns `row_id` from that order: email actions, message actions, the database action, then redirect actions. Conditional Logic created in the same payload targets that position.
 
 ## Webhook vs hook vs JavaScript
 
 | Need | Use |
 |---|---|
-| Call an external HTTP API | Official add-on if one exists; otherwise **Webhook** (`customendpoint`) |
+| Call an external HTTP API | Official add-on if one exists; otherwise **Webhook** (`customendpoint`). File fields can be sent as URLs (default), file objects, or Base64 |
 | Run PHP inside WordPress | **Run WordPress Hook** (`hook`) |
 | Browser-only tracking or DOM work after submit | **Run JavaScript** or **Conversion Tracking** |
 

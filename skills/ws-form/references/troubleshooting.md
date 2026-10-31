@@ -20,7 +20,7 @@ Preview URLs returned by Abilities (`url_preview`) are for checking a form, not 
 
 ## Debug console
 
-PRO setting Debug Console: Off, Administrator (default), or On.
+PRO setting Debug Console: Off, Administrators only (default), or Show always.
 
 When enabled, the public debug console logs events and action errors. Knowledge base: [Debug Console](https://wsform.com/knowledgebase/debug-console/).
 
@@ -33,7 +33,7 @@ Do not enable On for everyone on production without the user asking.
 | Symptom | Check |
 |---|---|
 | Nothing stored | Database action present? Form published? JS errors? |
-| Stored as spam | Captcha, Akismet, spam threshold, keyword/IP rules |
+| Stored as spam | Captcha, Akismet, spam threshold, keyword/IP rules, Random Text Detection |
 | Stored as error | Validation, required hidden fields, action errors |
 | Email missing | Send Email action exists? `meta.to` correct? `#field(id)` points at the email Field ID? |
 | Integration did not fire | Action `row_id` not skipped by Conditional Logic? Add-on installed? Spam skip? |
@@ -42,7 +42,9 @@ Do not enable On for everyone on production without the user asking.
 
 ## Abilities / MCP "cannot update"
 
-Write tools require **Allow Updates** (WS Form → Settings → AI, default off). Deletes require **Allow Deletes**. If list/get tools work but update tools fail or are absent, check those settings.
+Structure writes, including field, tab, section, action, and conditional deletes, require **Allow Updates** (WS Form → Settings → AI, default off). `form-delete` and `style-delete` require **Allow Deletes**. If list/get tools work but update tools fail or are absent, check those settings.
+
+If a write returns "This form is locked." or "This style is locked.", the object is locked. Unlock with `form-unlock` or `style-unlock` only when the user asks. A locked form cannot be published, drafted, or moved to the trash. A locked style cannot be edited or moved to the trash.
 
 MCP also requires the MCP Adapter and an authenticated WordPress user (application password). See [abilities-and-mcp.md](abilities-and-mcp.md).
 

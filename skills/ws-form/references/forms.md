@@ -12,7 +12,7 @@ Each form, tab, section, and field has a numeric ID assigned by WS Form. Never i
 
 When connected to a site:
 
-1. `ws-form/forms` to find the form (filter `published` if you only need embeddable forms).
+1. `ws-form/forms` to find the form (filter `published` if you only need embeddable forms; filter `folder_id` to list one folder, with `0` for forms in no folder).
 2. For IDs only: `ws-form/tabs`, `ws-form/sections`, `ws-form/fields`.
 3. For full configuration: `ws-form/form-get-json`.
 4. For notifications and other actions: `ws-form/actions` (PRO).
@@ -49,7 +49,7 @@ Prefer granular Abilities:
 | Delete a field | `ws-form/field-delete` |
 | Tab label | `ws-form/tab-update` |
 | Add/delete tab | `ws-form/tab-add` / `ws-form/tab-delete` |
-| Section label or `label_render` | `ws-form/section-update` |
+| Section label, `label_render`, or `widths` | `ws-form/section-update` |
 | Add/delete section | `ws-form/section-add` / `ws-form/section-delete` |
 | One action | `ws-form/action-update` |
 | One conditional | `ws-form/conditional-update` |
@@ -65,11 +65,23 @@ Common form-level concerns that already exist in WS Form (inspect the form JSON 
 - Published vs draft (`ws-form/form-publish`, `ws-form/form-draft`)
 - Embedding: shortcode `[ws_form id="123"]` via `ws-form/form-shortcode`; block markup via `ws-form/form-block` (block editor only)
 - Conversational forms (`conversational` meta, knowledge base: [Conversational Forms](https://wsform.com/knowledgebase/conversational-forms/))
+- Per-form translation, including WPML, Polylang, and Weglot when those plugins are present ([Translate forms](https://wsform.com/knowledgebase/translate-forms/))
 - Spam protection, keyword/IP limits (see [spam-protection.md](spam-protection.md))
 - Framework (`framework` setting; default `ws-form`)
 - Style assignment (`style_id`) when Styler is enabled
+- Form folders (`folder_id`; `0` means the form is not in a folder)
 
-Clone with `ws-form/form-clone` (clone is draft). Delete with `ws-form/form-delete` (trash by default; `permanent` true is irreversible). Restore with `ws-form/form-restore`. Deletes require **Allow Deletes**.
+Clone with `ws-form/form-clone` (clone is draft). Delete with `ws-form/form-delete` (trash by default; `permanent` true is irreversible). Restore with `ws-form/form-restore`. `form-delete` requires **Allow Deletes**.
+
+## Form folders
+
+Use `ws-form/form-folders` before creating, renaming, moving, or assigning. A form is in one folder. Listing or counting a parent folder covers only forms assigned directly to it. Folders cannot nest deeper than depth 5, and sibling names must be unique.
+
+`ws-form/form-folder-delete` removes the folder and its subfolders. The forms remain and are no longer in a folder. Knowledge base: [Form folders](https://wsform.com/knowledgebase/form-folders/).
+
+## Locking
+
+`ws-form/form-lock` stops edits, publish, draft, and trash until `ws-form/form-unlock`. List and get tools do not return a locked flag. A rejected write says "This form is locked." Unlock only when the user asks. Knowledge base: [Form locking](https://wsform.com/knowledgebase/form-locking/).
 
 ## Identifiers
 

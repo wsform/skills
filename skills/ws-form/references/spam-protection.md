@@ -9,6 +9,7 @@ Spam that meets the form **spam threshold** is stored with status `spam`. Other 
 | Mechanism | How |
 |---|---|
 | Honeypot | Form setting `honeypot`. Server rejects a filled honeypot (HTTP 403) |
+| Random Text Detection | Form setting `random_text`. On submit, suspicious text and dotted Gmail addresses are scored as blatant spam (100) and a locked submission note is added. [Random Text Detection](https://wsform.com/knowledgebase/random-text-detection/) |
 | reCAPTCHA | Native field type `recaptcha`. Cannot be created via Abilities. Add in the layout editor. [reCAPTCHA](https://wsform.com/knowledgebase/recaptcha/) |
 | hCaptcha | Native field type `hcaptcha`. Cannot be created via Abilities. Add in the layout editor. [hCaptcha](https://wsform.com/knowledgebase/hcaptcha/) |
 | Cloudflare Turnstile | Native field type `turnstile`. Cannot be created via Abilities. Add in the layout editor. [Turnstile](https://wsform.com/knowledgebase/turnstile/) |
@@ -34,4 +35,4 @@ Site-wide API keys live in WS Form settings; field-level keys can override. Neve
 
 Client widgets collect tokens. WS Form verifies those tokens on the server. A hidden checkbox in the theme is not a replacement.
 
-Documented filters: [`wsf_submit_block_keywords`](https://wsform.com/knowledgebase/wsf_submit_block_keywords/), [`wsf_submit_block_ips`](https://wsform.com/knowledgebase/wsf_submit_block_ips/).
+Documented filters: [`wsf_submit_block_keywords`](https://wsform.com/knowledgebase/wsf_submit_block_keywords/), [`wsf_submit_block_ips`](https://wsform.com/knowledgebase/wsf_submit_block_ips/). Random Text Detection can be adjusted with `wsf_submit_block_random_text`.

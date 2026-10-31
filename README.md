@@ -29,6 +29,7 @@ The `ws-form` skill helps agents:
 - Style forms using supported WS Form mechanisms
 - Troubleshoot forms and submissions
 - Use WS Form Abilities and MCP effectively
+- Organize forms into folders and respect form and style locks
 - Avoid unnecessary custom PHP and JavaScript
 
 ## Installation

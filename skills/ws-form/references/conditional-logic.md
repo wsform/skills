@@ -42,7 +42,23 @@ Action targets in Conditional Logic use the action's `row_id` from `ws-form/acti
 
 Put the controlling field in an earlier section than the fields it reveals.
 
-`do` values commonly map to native actions such as `show`/`hide` (visibility), `require`/`optional`, `enable`/`disable`, `set_value`, and `run_on_submit` / `do_not_run_on_submit`. Do not invent `do` keys. If the Ability description lists supported values, use those.
+Ability IF entries target fields only. Multiple `if` entries in one rule are combined with AND. Separate conditionals are separate rules.
+
+Allowed IF `logic` values for `conditional-add` and `conditional-update`: `equals`, `equals_not`, `blank`, `blank_not`, `contains`, `contains_not`, `gt`, `lt`, `gte`, `lte`, `checked`, `checked_not`.
+
+Allowed `do` values:
+
+| Target | `do` |
+|---|---|
+| Section | `show`, `hide` |
+| Field | `show`, `hide`, `require`, `optional`, `enable`, `disable`, `set_value` |
+| Action | `run_on_submit`, `do_not_run_on_submit` |
+
+`else` is optional. When it is omitted, WS Form inverts the matching pair (`show`/`hide`, `require`/`optional`, `enable`/`disable`, `run_on_submit`/`do_not_run_on_submit`).
+
+On `form-create-json`, an action target is the 1-based position in the final actions array, and that position becomes the `row_id`. Final order is email actions, then message actions, then the database action, then redirect actions. On an existing form, use the action `row_id`.
+
+The layout editor supports a wider set of conditions and actions than this Ability shape. Use the live Ability description for Ability calls. Use the layout editor for behavior the Ability shape does not list.
 
 ## What native Conditional Logic covers
 

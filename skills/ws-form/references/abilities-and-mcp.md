@@ -26,10 +26,12 @@ Angie (Elementor) can consume WS Form Abilities when that integration is present
 |---|---|---|
 | Enable (MCP Adapter) | off | Registers the MCP server |
 | Include in MCP Discovery | on | MCP clients can discover abilities |
-| Allow Updates | **off** | Form and style mutations |
-| Allow Deletes | **off** | Form and style deletions |
+| Allow Updates | **off** | Structure writes (`form-update-json`, field/tab/section/action/conditional add, update, and delete) and style palette, assignment, or default changes |
+| Allow Deletes | **off** | `form-delete` and `style-delete` |
 
-If read tools work and write tools fail, check Allow Updates before inventing a workaround.
+`form-create-json`, publish, draft, clone, restore, form and style lock/unlock, and form-folder tools stay available when those checkboxes are off. They still require the matching WordPress capability (`create_form`, `edit_form`, `publish_form`, `delete_form`, `lock_form`, `unlock_form`, `lock_form_style`, `unlock_form_style`, and the style equivalents).
+
+If read tools work and a structure write is missing, check Allow Updates. If `form-delete` or `style-delete` is missing, check Allow Deletes. `style-create` can make an empty style without Allow Updates. Setting palette colors, assigning `form_id`, or setting `default` requires Allow Updates.
 
 Style abilities register only when Styler is enabled (framework `ws-form`). Action and Conditional Logic abilities are PRO.
 
@@ -51,17 +53,25 @@ Namespace prefix `ws-form/` is omitted in the tables for readability. The live n
 
 | Ability | Role |
 |---|---|
-| `forms` | List (optional `published`, `order_by`, `order`) |
+| `forms` | List (optional `published`, `order_by`, `order`, `folder_id`) |
+| `form-folders` | List folders (`id`, `label`, `parent_id`, direct `form_count`) |
+| `form-folder-create` | Create. `parent_id` `0` is a root folder. Depth limit 5. Sibling names must be unique |
+| `form-folder-rename` | Rename. Sibling names must be unique |
+| `form-folder-move` | Reparent and reorder. `next_sibling_id` `0` puts it last |
+| `form-folder-assign` | Move forms into one folder. `folder_id` `0` unassigns them |
+| `form-folder-delete` | Delete the folder and its subfolders. Forms are kept and unassigned |
 | `form-create-json` | Create from JSON description |
 | `form-get-json` | Full form JSON (fields, actions, conditionals) |
 | `form-update-json` | Replace from JSON; keep structure; prefer granular field tools |
-| `form-publish` | Draft → published |
-| `form-draft` | Published → draft |
+| `form-publish` | Draft → published. Fails when the form is locked |
+| `form-draft` | Published → draft. Fails when the form is locked |
+| `form-lock` | Block edits and trash until unlocked |
+| `form-unlock` | Allow edits again. Use only when the user asks |
 | `form-clone` | Duplicate (clone is draft) |
 | `form-shortcode` | `[ws_form id="…"]` |
 | `form-block` | Block editor markup only |
 | `form-stats` | Views, saves, submits, unread, daily |
-| `form-delete` | Trash or permanent (`permanent`) |
+| `form-delete` | Trash or permanent (`permanent`). Locked forms cannot be trashed |
 | `form-restore` | Restore from trash |
 
 ### Fields, tabs, sections
@@ -78,7 +88,7 @@ Namespace prefix `ws-form/` is omitted in the tables for readability. The live n
 | `tab-delete` | Cannot delete last tab |
 | `sections` | List sections (`group_id` = tab id) |
 | `section-add` | Needs `group_id` |
-| `section-update` | Label / `label_render` |
+| `section-update` | Label, `label_render`, and `widths` |
 | `section-delete` | Cannot delete last section on a tab |
 
 ### Actions (PRO)
@@ -117,8 +127,10 @@ Namespace prefix `ws-form/` is omitted in the tables for readability. The live n
 | `styles` | List |
 | `style-get` | Palette |
 | `style-create` | Only if user asked for visual appearance |
-| `style-update` | Root palette keys only; `default` is site-wide |
-| `style-delete` | Cannot delete default styles |
+| `style-update` | Root palette keys only; `default` is site-wide. Fails when the style is locked |
+| `style-lock` | Block edits and trash until unlocked |
+| `style-unlock` | Allow edits again. Use only when the user asks |
+| `style-delete` | Cannot delete the site default, the conversational default, or a locked style |
 
 ## Preferred read-before-write
 
@@ -127,7 +139,11 @@ Namespace prefix `ws-form/` is omitted in the tables for readability. The live n
 3. Mutate with the narrowest Ability.
 4. Re-get or use returned `url_preview` / JSON to verify.
 
-Do not pass example IDs. Do not skip inspect on destructive tools (`form-delete`, `field-delete`, `tab-delete`, `section-delete`, `action-delete`, `conditional-delete`, `style-delete`, `submission-note-delete`).
+Do not pass example IDs. Do not skip inspect on destructive tools (`form-delete`, `form-folder-delete`, `field-delete`, `tab-delete`, `section-delete`, `action-delete`, `conditional-delete`, `style-delete`, `submission-note-delete`).
+
+Each form is in one folder. `folder_id` `0` means the form is not in a folder. Listing a parent folder returns only forms assigned to that folder. `form_count` is the same direct count. Knowledge base: [Form folders](https://wsform.com/knowledgebase/form-folders/).
+
+[Form locking](https://wsform.com/knowledgebase/form-locking/) and [style locking](https://wsform.com/knowledgebase/style-locking/) block edits until unlock. List and get tools do not return a locked flag. A failed edit reports "This form is locked." or "This style is locked."
 
 ## Granular vs whole-form JSON
 

@@ -51,6 +51,9 @@ If the user says to build a form without plugins, respect that request. Do not f
 - Pass field type keys that are not in the live `field-add` type list
 - Create a Styler style unless the user asks for a color theme, branding, or visual appearance
 - Treat email notifications as form settings (they are Send Email actions)
+- Edit, publish, draft, or trash a locked form or style until it is unlocked
+- Unlock a form or style unless the user asks to unlock it
+- Delete a form folder in order to delete its forms (forms stay; they become unassigned)
 
 ## Preferred workflow
 
@@ -67,7 +70,9 @@ If the user says to build a form without plugins, respect that request. Do not f
 
 New forms created through Abilities start as drafts. Publish with `ws-form/form-publish` before embedding on a live page.
 
-Write operations that change form structure require **Allow Updates** (WS Form → Settings → AI, default off). Deletes require **Allow Deletes** (default off). If a write tool is missing, inspect those settings rather than inventing an alternative tool.
+**Allow Updates** (WS Form → Settings → AI, default off) gates structure writes and style palette or assignment changes. That includes field, tab, section, action, and conditional deletes. **Allow Deletes** (default off) gates `ws-form/form-delete` and `ws-form/style-delete`. If a write tool is missing, inspect those settings rather than inventing an alternative tool.
+
+A locked form or style rejects edits with "This form is locked." or "This style is locked." Unlock with `ws-form/form-unlock` or `ws-form/style-unlock` only when the user asks.
 
 ## Abilities and MCP
 
@@ -79,7 +84,8 @@ Preferred patterns:
 
 | Task | Prefer |
 |---|---|
-| Find forms | `ws-form/forms` |
+| Find forms | `ws-form/forms` (optional `folder_id`; `0` is forms in no folder) |
+| Organize forms | `ws-form/form-folders`, then create, rename, move, or assign |
 | Create a form | `ws-form/form-create-json`, then `ws-form/form-publish` if it should be live |
 | Inspect a form | `ws-form/form-get-json`, or `ws-form/fields` / `ws-form/sections` / `ws-form/tabs` for IDs |
 | Change one field label or meta | `ws-form/field-update` |
@@ -105,7 +111,7 @@ Details: [references/abilities-and-mcp.md](references/abilities-and-mcp.md)
 - Email, database, webhooks, add-ons: [references/actions-and-integrations.md](references/actions-and-integrations.md)
 - Submission records, notes, stats: [references/submissions.md](references/submissions.md)
 - Native and server-side validation: [references/validation.md](references/validation.md)
-- Honeypot, captcha, Akismet, IP/keyword blocks: [references/spam-protection.md](references/spam-protection.md)
+- Honeypot, captcha, Akismet, Random Text Detection, IP/keyword blocks: [references/spam-protection.md](references/spam-protection.md)
 - Styler, CSS variables, frameworks: [references/styling.md](references/styling.md)
 - Diagnostic-first debugging: [references/troubleshooting.md](references/troubleshooting.md)
 
@@ -115,6 +121,7 @@ Details: [references/abilities-and-mcp.md](references/abilities-and-mcp.md)
 - Show a field when another field equals a value: use **Conditional Logic**, not custom JS.
 - Send leads to Salesforce (or another advertised integration): check whether the official WS Form add-on is installed. Prefer that action over a custom REST client.
 - Change the label on Field ID 123: inspect, then `ws-form/field-update`. Do not rewrite the form JSON.
+- Put two fields side by side only on larger screens: field or section `widths`, with `width_factor` `0.5` reserved for half width at every screen size.
 - Form is not submitting: inspect the form, the failing action, submissions, and debug output. Do not replace submission with custom PHP.
 
 ## Documentation
